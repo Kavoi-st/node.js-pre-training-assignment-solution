@@ -1,13 +1,21 @@
 import { InMemoryRepository } from './repository';
 import { Todo, NewTodo } from './types';
 
+class TodoNotFoundError extends Error {
+  constructor(id: number) {
+    super(`Todo with id ${id} not found`);
+    this.name = 'TodoNotFoundError';
+  }
+}
+
 export class TodoApi {
   private repo = new InMemoryRepository<Todo>();
 
   async getAll(): Promise<Todo[]> {
-    throw new Error('getAll: not implemented');
+    setTimeout(this.getAll,300);
+    return [...this.todo.getAll()];
   }
-
+ 
   async add(newTodo: NewTodo): Promise<Todo> {
     throw new Error('add: not implemented');
   }
