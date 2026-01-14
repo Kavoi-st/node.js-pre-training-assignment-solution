@@ -7,6 +7,11 @@ class TodoNotFoundError extends Error {
     this.name = 'TodoNotFoundError';
   }
 }
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+      }
 
 export class TodoApi {
   private repo = new InMemoryRepository<Todo>();
