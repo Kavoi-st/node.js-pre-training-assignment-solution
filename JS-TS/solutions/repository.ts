@@ -1,24 +1,43 @@
+class TodoNotFoundError extends Error {
+  constructor(id: number) {
+    super(`Todo with id ${id} not found`);
+    this.name = 'TodoNotFoundError';
+  }
+}
+
 export class InMemoryRepository<T extends { id: number }> {
-  // private storage
   private items: T[] = [];
 
   add(entity: T): T {
-    throw new Error('add: not implemented');
+    this.items.push(entity);
+    return entity;
   }
 
   update(id: number, patch: Partial<T>): T {
-    throw new Error('update: not implemented');
+        const todo = this.items.find(t => t.id === id);
+    if (!todo) {
+      throw new TodoNotFoundError(id);
+    }
+
+    const updated: T = { ...todo, ...patch };
+    this.items = this.items.map(item => item.id === id ? updated : item);
+    return updated;
   }
 
   remove(id: number): void {
-    throw new Error('remove: not implemented');
+      const exists = this.items.some(t => t.id === id);
+
+    if (!exists) {
+      throw new TodoNotFoundError(id);
+    }
+    this.items = this.items.filter(item => item.id !== id);
   }
 
   findById(id: number): T | undefined {
-    throw new Error('findById: not implemented');
+    return this.items.find(item => item.id === id);
   }
 
   findAll(): T[] {
-    throw new Error('findAll: not implemented');
+    return this.items;
   }
 }
