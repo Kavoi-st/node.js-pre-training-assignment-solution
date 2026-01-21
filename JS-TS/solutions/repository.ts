@@ -1,10 +1,3 @@
-class TodoNotFoundError extends Error {
-  constructor(id: number) {
-    super(`Todo with id ${id} not found`);
-    this.name = 'TodoNotFoundError';
-  }
-}
-
 export class InMemoryRepository<T extends { id: number }> {
   private items: T[] = [];
 
@@ -15,11 +8,7 @@ export class InMemoryRepository<T extends { id: number }> {
 
   update(id: number, patch: Partial<T>): T {
         const todo = this.items.find(t => t.id === id);
-    if (!todo) {
-      throw new TodoNotFoundError(id);
-    }
-
-    const updated: T = { ...todo, ...patch };
+    const updated: T = { ...todo, ...patch } as T;
     this.items = this.items.map(item => item.id === id ? updated : item);
     return updated;
   }
@@ -27,9 +16,7 @@ export class InMemoryRepository<T extends { id: number }> {
   remove(id: number): void {
       const exists = this.items.some(t => t.id === id);
 
-    if (!exists) {
-      throw new TodoNotFoundError(id);
-    }
+
     this.items = this.items.filter(item => item.id !== id);
   }
 

@@ -28,10 +28,7 @@ export class TodoApi {
     return this.repo.add(todo);
   }
 
-  async update(
-    id: number,
-    update: Partial<Omit<Todo, 'id' | 'createdAt'>>
-  ): Promise<Todo> {
+  async update(id: number, update: Partial<Omit<Todo, 'id' | 'createdAt'>>): Promise<Todo> {
     await delay(300);
 
     const todo = this.repo.findAll().find(t => t.id === id);
